@@ -9,32 +9,32 @@ use Workerks;
 
 class Converter
 {
-	private $CurrentObject;
-	private $NeeedObject;
+	private $FormatReader;
+	private $FormatWriter;
     public function __construct(string $CurrentFormat='kek',string $NeededFormat='kek')
     {
     	if ($CurrentFormat=='csv'){
-        $this->CurrentObject = new FormatWorkers\CsvWorker();
+        $this->FormatReader = new FormatWorkers\CsvReader();
     	} else if ($CurrentFormat=='json') {
-        $this->CurrentObject = new FormatWorkers\JsonWorker();
+        $this->FormatReader = new FormatWorkers\JsonReader();
     	} else if ($CurrentFormat=='xml'){
-        $this->CurrentObject = new FormatWorkers\XmlWorker();
+        $this->FormatReader = new FormatWorkers\XmlReader();
     	}
 
         if ($NeededFormat=='csv'){
-        $this->NeeedObject = new FormatWorkers\CsvWorker();
+        $this->FormatWriter = new FormatWorkers\CsvWriter();
         } else if ($NeededFormat=='json') {
-        $this->NeeedObject = new FormatWorkers\JsonWorker();
+        $this->FormatWriter = new FormatWorkers\JsonWriter();
         } else if ($NeededFormat=='xml'){
-        $this->NeeedObject = new FormatWorkers\XmlWorker();
+        $this->FormatWriter = new FormatWorkers\XmlWriter();
         }
     }
 
     public function convert(\SplFileObject $file, string $outputFormat, string $outputFilePath)
     {
-        // var_dump($this->CurrentObject);
-       $ContentFile = $this->CurrentObject->getContents($file);
-       $this->NeeedObject->writeContents($ContentFile,$outputFilePath);
+        // var_dump($this->FormatReader);
+       $ContentFile = $this->FormatReader->getContents($file);
+       $this->FormatWriter->writeContents($ContentFile,$outputFilePath);
 
     }
 }
