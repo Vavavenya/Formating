@@ -4,31 +4,37 @@ declare(strict_types=1);
 
 namespace FileConverter;
 
+use Workerks;
+
+
 class Converter
 {
 	private $CurrentObject;
 	private $NeeedObject;
-    public function __construct(string $CurrentFormat,string $NeededFormat)
+    public function __construct(string $CurrentFormat='kek',string $NeededFormat='kek')
     {
     	if ($CurrentFormat=='csv'){
-        $CurrentObject = new CsvWorker();
+        $this->CurrentObject = new FormatWorkers\CsvWorker();
     	} else if ($CurrentFormat=='json') {
-        $CurrentObject = new JsonWorker();
+        $this->CurrentObject = new FormatWorkers\JsonWorker();
     	} else if ($CurrentFormat=='xml'){
-        $CurrentObject = new XmlWorker();
+        $this->CurrentObject = new FormatWorkers\XmlWorker();
     	}
 
         if ($NeededFormat=='csv'){
-        $NeeedObject = new CsvWorker();
+        $this->NeeedObject = new FormatWorkers\CsvWorker();
         } else if ($NeededFormat=='json') {
-        $NeeedObject = new JsonWorker();
+        $this->NeeedObject = new FormatWorkers\JsonWorker();
         } else if ($NeededFormat=='xml'){
-        $NeeedObject = new XmlWorker();
+        $this->NeeedObject = new FormatWorkers\XmlWorker();
         }
     }
 
     public function convert(\SplFileObject $file, string $outputFormat, string $outputFilePath)
     {
-        
+        // var_dump($this->CurrentObject);
+       $ContentFile = $this->CurrentObject->getContents($file);
+       $this->NeeedObject->writeContents($ContentFile,$outputFilePath);
+
     }
 }
