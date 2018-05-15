@@ -15,7 +15,7 @@ class ConverterTest extends TestCase
     {
         $outputFilePath = $this->workspace . '/output.json';
         $file = new \SplFileObject(__DIR__ . '/test.json');
-        $converter = $this->getConverter();
+        $converter = $this->getConverter("json","json");
 
         $converter->convert($file, 'json', $outputFilePath);
 
@@ -29,7 +29,7 @@ class ConverterTest extends TestCase
     {
         $outputFilePath = $this->workspace . '/output.csv';
         $file = new \SplFileObject(__DIR__ . '/test.csv');
-        $converter = $this->getConverter();
+        $converter = $this->getConverter("csv","csv");
 
         $result = $converter->convert($file, 'csv', $outputFilePath);
 
@@ -48,7 +48,7 @@ FILE
     {
         $outputFilePath = $this->workspace . '/output.json';
         $file = new \SplFileObject(__DIR__ . '/test.csv');
-        $converter = $this->getConverter();
+        $converter = $this->getConverter("csv","json");
 
         $converter->convert($file, 'json', $outputFilePath);
 
@@ -69,8 +69,8 @@ FILE
         @unlink($this->workspace);
     }
 
-    private function getConverter()
+    private function getConverter(string $CurrentFormat='kek',string $NeededFormat='kek')
     {
-        return new Converter(\SplFileObject $file, string $outputFormat, string $outputFilePath);
+        return new Converter($CurrentFormat,$NeededFormat);
     }
 }
